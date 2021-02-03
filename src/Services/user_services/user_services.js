@@ -38,13 +38,40 @@ const Get_UserById_Service = async (req, res) => {
     return ResponseUtils.OkResponse(res, user._doc)
 }
 
-//TODO: Update @user
 const Update_User_Service = async (req, res) => {
+    const user = {
+        ...req.body
+    }
 
+    const result = await UserModel
+        .updateOne(user)
+
+    if (result.nModified === 0) {
+        return ResponseUtils.ErrorBadRequest(res, "No row to modified")
+    }
+
+    return ResponseUtils.OkResponse(res, req.body)
 }
 
-//TODO: Delete @user
-const Delete_User_Service = async (req, res) => {
+const Delete_User_Service = (req, res) => {
+    return UserModel
+        .deleteOne({_id: req.params.userId})
+        .then(result => {
+            if (result.deletedCount > 0) {
+                const DeletedUserId = {
+                    message: "Deleted",
+                    data: {
+                        id: req.params.userId
+                    }
+                }
+                return ResponseUtils.OkResponse(res, DeletedUserId)
+            }
+
+            return ResponseUtils.ErrorBadRequest(res, "Invalid User Id")
+
+        })
+        .catch(err => ResponseUtils.ErrorBadRequest(res, "Invalid User Id"))
+
 
 }
 

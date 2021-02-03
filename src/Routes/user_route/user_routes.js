@@ -12,8 +12,8 @@ UserRoutes.get("/:userId", UserController.GetUser)
 // Get All User
 UserRoutes.get("/", UserController.GetUsers)
 
-// Update User
-UserRoutes.put("/", UserController.UpdateUser)
+// Update User with PUT
+UserRoutes.put("/:userId", UserController.UpdateUser)
 
 //Delete User
 UserRoutes.delete("/:userId", UserController.DeleteUser)
